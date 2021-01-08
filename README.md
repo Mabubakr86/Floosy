@@ -1,0 +1,2 @@
+# Floosy
+Track your expenses
