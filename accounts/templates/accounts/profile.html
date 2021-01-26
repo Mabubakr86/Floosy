@@ -1,0 +1,46 @@
+{% extends "accounts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <section id="signIn">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-7 col-lg-5 mt-5 mx-auto text-center">
+                    <h1 id="bigLogo" class="text-primary">
+                    <a href="index.html">FLOOSY<img class="mb-2" src="imgs/logo-icon2.svg" alt=""></a>
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-7 col-lg-5 my-3 mx-auto">
+                    <div class="bg-white rounded">
+                        <div class="card">
+                            <img class="card-img-top" src="{{request.user.account.image.url}}" alt="Card image cap">
+                            <div class="card-body">
+                                {% if user.account.first_name %}
+                                <p class="card-text">{{user.account.first_name}}</p>
+                                {% endif %}
+                                {% if user.account.last_name %}
+                                <p class="card-text">{{user.account.last_name}}</p>{% endif %}
+                                {% if user.account.email %}
+                                <p class="card-text">{{user.email}}</p>
+                                {% endif %}
+                                {% if user.account.country %}
+                                <p class="card-text">{{user.account.country}}</p>
+                                {% endif %}
+                                {% if user.account.bio %}
+                                <p class="card-text">{{user.account.bio}}</p> 
+                                {% endif %}
+                                <a href="{% url 'accounts:edit_profile'%}" class="btn btn-primary">Edit ..</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-7 col-lg-5 my-3 mx-auto text-center">
+                        <p>Go back to my wallets <a href="{% url 'tracker:wallets' %}"> Floosy</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endblock content %}

@@ -1,0 +1,78 @@
+
+/** General *****************/
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
+
+html, body {
+  background-color: #f8f9fa;
+  font-family: 'Lato', sans-serif;
+}
+
+.sectionHeading {
+  font-weight: 900; text-transform: uppercase;
+}
+
+.blockHeading {
+  margin: 0;
+  font-weight: 900; font-size: 1.1rem; text-transform: uppercase;
+  border-bottom: 1px solid #e9ecef;
+}
+
+#walletPieChart { height: 200px; }
+
+/** SignIn & SignUp Pages Pages *****************/
+
+#bigLogo { font-weight: 900; }
+#bigLogo a { text-decoration: none; }
+#bigLogo a:hover { color: #007bff; }
+
+
+/** Navbar *****************/
+
+nav.navbar { min-height: 70px; }
+
+.navbar-brand { font-weight: 900; }
+
+.navbar-dark .navbar-nav .nav-item { margin: 0 8px; }
+.navbar-dark .navbar-nav .nav-link { font-weight: 700; color: #fff; }
+.navbar-dark .navbar-nav .nav-link:hover { color: #fff; }
+
+#userAvatar {
+  width: 36px; height: 36px;
+  margin-top: -0.4rem; float: right;
+  border: 2px solid #fff;
+}
+
+
+/** Wallets *****************/
+
+.walletName {
+  position: absolute; top: 2.5rem; left: 0; bottom: 0; right: 0;
+  font-size: 1rem!important; font-weight: 700; color: #007bff;
+}
+
+@media (min-width: 768px){
+  .walletName {
+    top: 3.5rem;
+    font-size: 1.4rem!important;
+  }
+}
+
+.walletItemAdd .walletName { font-size: 3rem!important; }
+
+
+
+/** Tickets *****************/
+
+.ticketTitle { font-weight: 900; }
+
+
+/** Stats *****************/
+
+#progressChart .progress {
+  height: 2rem;
+  background-color: transparent;
+}
+#progressChart .progress span {
+  line-height: 1rem; font-size: 1rem; font-weight: 700;
+}

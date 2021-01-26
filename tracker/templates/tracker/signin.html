@@ -1,0 +1,60 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.png' %}">
+    <title>FLOOSY | SignIn</title>
+  </head>
+  <body>
+    <section id="signIn">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-md-7 col-lg-5 mt-5 mx-auto text-center">
+            <h1 id="bigLogo" class="text-primary">
+            <a href="index.html">FLOOSY<img class="mb-2" src="{% static 'imgs/logo-icon2.svg' %}" alt=""></a>
+            </h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-7 col-lg-5 my-3 mx-auto">
+            <div class="bg-white rounded">
+              <h5 class="blockHeading p-3 text-center text-primary">SignIn</h5>
+<!--               <form class="p-4" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="usernameInput">Username</label>
+                  <input type="text" class="form-control" id="usernameInput" aria-describedby="" name="username">
+                </div>
+                <div class="form-group">
+                  <label for="passwordInput">Password</label>
+                  <input type="password" class="form-control" id="passwordInput" name="password">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">SignIn</button>
+              </form> -->
+              <form method="POST">
+                {% csrf_token %}
+                {{form|crispy}}
+                <input type="submit" name="" value="Log In">
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-7 col-lg-5 my-3 mx-auto text-center">
+            <p>Don’t have an account? <a href="signup.html">Sign Up</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    
+    <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | Home{% endblock title %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="row mt-4">
+      <div class="col-12">
+        <h5 class="sectionHeading">Wallets</h5>
+      </div>
+    </div>
+    <div class="row">
+      {% for object in object_list %}
+        <div class="col-6 col-sm-4">
+          <a href="{{object.get_absolute_url}}">
+            <div class="walletItem my-4 position-relative">
+              <img class="img-fluid" src="{% static 'imgs/ticket.svg' %}" alt="">
+              <p class="walletName d-flex align-items-center justify-content-center pr-4" style="color: black">{{object.name}}</p>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+      <div class="col-6 col-sm-4">
+        <a href="{% url 'tracker:add_wallet' %}">
+          <div class="walletItem walletItemAdd my-4 position-relative">
+            <img class="img-fluid" src="{% static 'imgs/ticket.svg' %}" alt="">
+            <p class="walletName d-flex align-items-center justify-content-center pr-4" style="color: black">+</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<!--
+<div class="row">
+  <div class="col-6 col-sm-4">
+    <a href="wallet.html">
+      <div class="walletItem my-4 position-relative">
+        <img class="img-fluid" src="{% static 'imgs/ticket.svg' %}" alt="">
+        <p class="walletName d-flex align-items-center justify-content-center pr-4" style="color: black">General</p>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-sm-4">
+    <a href="wallet.html">
+      <div class="walletItem my-4 position-relative">
+        <img class="img-fluid" src="{% static 'imgs/ticket.svg' %}" alt="">
+        <p class="walletName d-flex align-items-center justify-content-center pr-4" style="color: black">General</p>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-sm-4">
+    <a href="wallet.html">
+      <div class="walletItem my-4 position-relative">
+        <img class="img-fluid" src="{% static 'imgs/ticket.svg' %}" alt="">
+        <p class="walletName d-flex align-items-center justify-content-center pr-4" style="color: black">General</p>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-sm-4">
+    <a href="wallet.html">
+      <div class="walletItem my-4 position-relative">
+        <img class="img-fluid" src="{% static 'imgs/ticket.svg' %}" alt="">
+        <p class="walletName d-flex align-items-center justify-content-center pr-4" style="color: black">General</p>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-sm-4">
+    <a href="wallet.html">
+      <div class="walletItem my-4 position-relative">
+        <img class="img-fluid" src="{% static 'imgs/ticket.svg' %}" alt="">
+        <p class="walletName d-flex align-items-center justify-content-center pr-4" style="color: black">General</p>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-sm-4">
+    <a href="wallet.html">
+      <div class="walletItem walletItemAdd my-4 position-relative">
+        <img class="img-fluid" src="{% static 'imgs/ticket.svg' %}" alt="">
+        <p class="walletName d-flex align-items-center justify-content-center pr-4" style="color: black">+</p>
+      </div>
+    </a>
+  </div>
+</div>
+</div>
+</section> -->
+{% endblock content %}

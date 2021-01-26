@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block title %} | {{wallet.name}}-Wallet{% endblock title %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="row mt-4">
+      <div class="col-10">
+        <h5 class="sectionHeading m-0"><span class="text-primary"></span> {{wallet.name}}</h5>
+      </div>
+      <div class="col-2">
+        <a href="{% url 'tracker:edit_wallet' wallet.slug %}">
+          <button type="button" class="btn btn-primary">Edit</button>
+        </a>
+        <a href="{% url 'tracker:delete_wallet' wallet.slug%}">
+          <button type="button" class="btn btn-danger">Delete</button>
+        </a>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="block bg-white my-4 rounded">
+          <h5 class="blockHeading p-3 text-center text-primary">Balance</h5>
+          <div class="blockContent p-4 text-center">
+            <h2 class="text-primary"><strong>{{wallet.balance|intcomma}}</strong></h2>
+            <h5><strong>EGP</strong></h5>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary w-100 mb-4"><strong>SHOW TICKETS</strong></button>
+        <a href="{% url 'tracker:add_category' %}">
+                <button type="button" class="btn btn-primary w-100 mb-4"><strong>Add New Category</strong></button>
+
+        </a>
+
+      </div>
+      <div class="col-12 col-md-8">
+        <div class="block bg-white my-4 p-4 rounded">
+          <canvas id="walletPieChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="block bg-white my-4 rounded">
+          <h5 class="blockHeading p-3 text-center text-primary">Add Ticket</h5>
+          <div class="blockContent p-4">
+            
+            <form method="POST" autocomplete="off">
+              {% csrf_token %}
+              {{ form.media }}
+              <!-- {{form|crispy}} -->
+              <div class="form-row">
+                <div class="form-group col-md-6 col-lg-4">
+                  {{form.title|as_crispy_field}}
+                </div>
+                <div class="form-group col-md-6 col-lg-4">
+                  {{form.date|as_crispy_field}}
+                </div>
+
+                <div class="form-group col-md-6 col-lg-4">
+                  <label for="inputValue">{{form.value.label}}*</label>
+                  <div class="input-group mb-2 mr-sm-2">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">EGP</div>
+                    </div>
+                    {{form.value}}
+              </div>
+                </div>
+                <div class="form-group col-md-6 col-lg-6">
+                  {{form.category|as_crispy_field}}
+<!--                   <label for="inputCategory">Category</label>
+                  <select id="inputCategory" class="form-control">
+                    <option selected >Choose...</option>
+                    {% for category in categories %}
+                      <option>{{category.name}}</option>
+                    {% endfor %}
+                  </select> -->
+                </div>
+<!--                 <div class="form-group col-md-6 col-lg-3">
+                  <label type='hidden' for="catbtn">.</label>
+                  <a href="{% url 'tracker:add_category' %}">
+                    <button type="button" class="btn btn-outline-primary form-control" id="catbtn">Add New Category ...</button> </a>                  
+                </div> -->
+                <div class="form-group col-md-6 col-lg-6">
+                  {{form.kind|as_crispy_field}}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-12">
+                  {{form.desc|as_crispy_field}}
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-12">
+              *Required Field
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary mt-2 w-100"><strong>SUBMIT</strong></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+{% block javascript %}
+<script src="{% static 'chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'js/chartWallet.js' %}"></script>
+<script type="text/javascript">
+   $(function () {
+       $('#datetimepicker1').datetimepicker();
+   });
+</script>
+{% endblock javascript %}

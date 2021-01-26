@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="shortcut icon" href="favicon.png">
+  <title>FLOOSY | Tickets</title>
+</head>
+<body>
+
+  <!-- Navbar ---------->
+  <section class="bg-primary">
+    <div class="container">
+      <nav class="navbar navbar-expand-md navbar-dark bg-transparent">
+
+        <a class="navbar-brand mt-1" href="index.html">FLOOSY<img class="mb-1 ml-1" src="imgs/logo-icon.svg" alt=""></a>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link mt-1" href="index.html">
+                <img class="mb-1 mr-1" src="imgs/wallets-icon.svg" alt="">Wallets<span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mt-1" href="tickets.html"><img class="mb-1 mr-1" src="imgs/tickets-icon.svg" alt="">Tickets</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mt-1" href="stats.html"><img class="mb-1 mr-1" src="imgs/stats-icon.svg" alt="">Stats</a>
+            </li>
+
+            <li class="nav-item ml-md-4">
+              <a class="nav-link mt-1" href="#">
+                <span>Mohamed A.</span>
+                <img id="userAvatar" class="rounded-circle ml-2" src="imgs/avatar.jpg" alt="User's Avatar">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </section>
+
+
+  <!-- Tickets List ---------->
+  <section>
+    <div class="container">
+
+      <div class="row mt-4">
+        <div class="col-12">
+          <h5 class="sectionHeading">Tickets</h5>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-3">
+          <div class="my-3 p-4 border rounded">
+            <form>
+
+              <div class="form-group">
+                <label for="inputDateFrom">Date</label>
+                <input type="date" class="form-control" id="inputDateFrom">
+              </div>
+
+              <div class="form-group">
+                <label for="inputValue">Value</label>
+                <div class="input-group mb-2 mr-sm-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">USD</div>
+                  </div>
+                  <input type="text" class="form-control" id="inputValue">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="inputCategory">Category</label>
+                <select id="inputCategory" class="form-control">
+                  <option selected>Choose...</option>
+                  <option>Category 1</option>
+                  <option>Category 2</option>
+                  <option>Category 3</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="inputWallet">Wallet</label>
+                <select id="inputWallet" class="form-control">
+                  <option selected>Choose...</option>
+                  <option>Wallet 1</option>
+                  <option>Wallet 2</option>
+                  <option>Wallet 3</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary mt-2 col-12"><strong>SEARCH</strong></button>
+              </div>
+            
+            </form>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="row">
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="ticketItem my-3 bg-white rounded">
+                <h5 class="blockHeading p-3 text-center text-primary">
+                  300 <span class="text-dark">USD</span>
+                  <br>
+                  <small class="text-warning"><strong>Wallet</strong></small>
+                </h5>
+                <div class="itemContent p-3">
+                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
+                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
+                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
+                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
+                  <div class="ticketControl text-center">
+                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
+                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="ticketItem my-3 bg-white rounded">
+                <h5 class="blockHeading p-3 text-center text-primary">
+                  300 <span class="text-dark">USD</span>
+                  <br>
+                  <small class="text-warning"><strong>Wallet</strong></small>
+                </h5>
+                <div class="itemContent p-3">
+                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
+                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
+                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
+                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
+                  <div class="ticketControl text-center">
+                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
+                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="ticketItem my-3 bg-white rounded">
+                <h5 class="blockHeading p-3 text-center text-primary">
+                  300 <span class="text-dark">USD</span>
+                  <br>
+                  <small class="text-warning"><strong>Wallet</strong></small>
+                </h5>
+                <div class="itemContent p-3">
+                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
+                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
+                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
+                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
+                  <div class="ticketControl text-center">
+                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
+                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="ticketItem my-3 bg-white rounded">
+                <h5 class="blockHeading p-3 text-center text-primary">
+                  300 <span class="text-dark">USD</span>
+                  <br>
+                  <small class="text-warning"><strong>Wallet</strong></small>
+                </h5>
+                <div class="itemContent p-3">
+                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
+                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
+                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
+                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
+                  <div class="ticketControl text-center">
+                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
+                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="ticketItem my-3 bg-white rounded">
+                <h5 class="blockHeading p-3 text-center text-primary">
+                  300 <span class="text-dark">USD</span>
+                  <br>
+                  <small class="text-warning"><strong>Wallet</strong></small>
+                </h5>
+                <div class="itemContent p-3">
+                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
+                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
+                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
+                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
+                  <div class="ticketControl text-center">
+                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
+                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+              <div class="ticketItem my-3 bg-white rounded">
+                <h5 class="blockHeading p-3 text-center text-primary">
+                  300 <span class="text-dark">USD</span>
+                  <br>
+                  <small class="text-warning"><strong>Wallet</strong></small>
+                </h5>
+                <div class="itemContent p-3">
+                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
+                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
+                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
+                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
+                  <div class="ticketControl text-center">
+                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
+                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row my-3">
+            <div class="col-12 text-center">
+              <button type="button" class="btn btn-success">LOAD MORE</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="bg-white mt-5 py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <p class="m-0">Copyright © <strong>FLOOSY</strong> 2021</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/jquery-3.5.1.slim.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+Frontend:
+wallets page when only one row
+confirm delete wallet page
+add wallet page
+add new category as nice link
+
+
+
+Backend:
+categories (edit & delete one category), deleteting all related tickets and adjusting balance
+currency based on country

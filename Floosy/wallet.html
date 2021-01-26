@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="shortcut icon" href="favicon.png">
+  <title>FLOOSY | Home</title>
+</head>
+<body>
+
+  <!-- Navbar ---------->
+  <section class="bg-primary">
+    <div class="container">
+      <nav class="navbar navbar-expand-md navbar-dark bg-transparent">
+
+        <a class="navbar-brand mt-1" href="index.html">FLOOSY<img class="mb-1 ml-1" src="imgs/logo-icon.svg" alt=""></a>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link mt-1" href="index.html">
+                <img class="mb-1 mr-1" src="imgs/wallets-icon.svg" alt="">Wallets<span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mt-1" href="tickets.html"><img class="mb-1 mr-1" src="imgs/tickets-icon.svg" alt="">Tickets</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mt-1" href="stats.html"><img class="mb-1 mr-1" src="imgs/stats-icon.svg" alt="">Stats</a>
+            </li>
+
+            <li class="nav-item ml-md-4">
+              <a class="nav-link mt-1" href="#">
+                <span>Mohamed A.</span>
+                <img id="userAvatar" class="rounded-circle ml-2" src="imgs/avatar.jpg" alt="User's Avatar">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </section>
+
+
+
+  <section>
+    <div class="container">
+
+      <div class="row mt-4">
+        <div class="col-12">
+          <h5 class="sectionHeading m-0"><span class="text-primary">General</span> Wallet</h5>
+        </div>
+      </div>
+  
+      <div class="row">
+
+        <div class="col-12 col-md-4">
+          <div class="block bg-white my-4 rounded">
+            <h5 class="blockHeading p-3 text-center text-primary">Balance</h5>
+            <div class="blockContent p-4 text-center">
+              <h2 class="text-primary"><strong>1,250.00</strong></h2>
+              <h5><strong>USD</strong></h5>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary w-100 mb-4"><strong>SHOW TICKETS</strong></button>
+        </div>
+
+        <div class="col-12 col-md-8">
+          <div class="block bg-white my-4 p-4 rounded">
+            <canvas id="walletPieChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-12">
+          <div class="block bg-white my-4 rounded">
+            <h5 class="blockHeading p-3 text-center text-primary">Add Ticket</h5>
+            <div class="blockContent p-4">
+              
+              <form>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6 col-lg-4">
+                    <label for="inputTitle">Title</label>
+                    <input type="text" class="form-control" id="inputTitle">
+                  </div>
+                  <div class="form-group col-md-6 col-lg-4">
+                    <label for="inputDate">Date</label>
+                    <input type="date" class="form-control" id="inputDate">
+                  </div>
+                  <div class="form-group col-md-6 col-lg-4">
+                    <label for="inputTime">Time</label>
+                    <input type="time" class="form-control" id="inputTime">
+                  </div>
+                  <div class="form-group col-md-6 col-lg-4">
+                    <label for="inputValue">Value</label>
+                    <div class="input-group mb-2 mr-sm-2">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">USD</div>
+                      </div>
+                      <input type="text" class="form-control" id="inputValue">
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6 col-lg-4">
+                    <label for="inputCategory">Category</label>
+                    <select id="inputCategory" class="form-control">
+                      <option selected>Choose...</option>
+                      <option>Category 1</option>
+                      <option>Category 2</option>
+                      <option>Category 3</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6 col-lg-4">
+                    <label for="">Kind</label>
+                    <br>
+                    <div class="form-check form-check-inline mt-2">
+                      <input class="form-check-input" type="radio" name="inputKind" id="kindIncome" value="income">
+                      <label class="form-check-label" for="kindIncome">Income</label>
+                    </div>
+                    <div class="form-check form-check-inline mt-2">
+                      <input class="form-check-input" type="radio" name="inputKind" id="kindOutcome" value="outcome">
+                      <label class="form-check-label" for="kindOutcome">Outcome</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-12">
+                    <label for="inputDescription">Description</label>
+                    <textarea class="form-control" id="inputDescription" rows="4"></textarea>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-2 w-100"><strong>SUBMIT</strong></button>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <footer class="bg-white mt-5 py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <p class="m-0">Copyright © <strong>FLOOSY</strong> 2021</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/jquery-3.5.1.slim.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+
+  <script src="chart.js/Chart.min.js"></script>
+  <script src="js/chartWallet.js"></script>
+</body>
+</html>
