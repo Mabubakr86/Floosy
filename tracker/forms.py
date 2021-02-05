@@ -14,7 +14,11 @@ class WalletForm(forms.ModelForm):
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['wallet','name']      
+        fields = ['wallet','name'] 
+
+    def __init__(self,user,*args,**kwargs):
+        super (CategoryForm,self ).__init__(*args,**kwargs) 
+        self.fields['wallet'].queryset = Wallet.objects.filter(owner=user)     
 
 class TicketForm(forms.ModelForm):
     def __init__(self, wallet, *args, **kwargs):

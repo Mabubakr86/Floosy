@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'tracker',
+    'api',
+    'rest_framework',
     'crispy_forms',
     'django_countries',
     'tempus_dominus',
@@ -130,7 +132,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 LOGIN_URL = 'accounts:login'
-LOGIN_REDIRECT_URL = 'tracker:home'
+LOGIN_REDIRECT_URL = 'tracker:wallets'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -152,3 +154,11 @@ EMAIL_HOST_PASSWORD = 'cmiutmghrxvlikuv' #past the key or password app here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'default from email'
+
+
+#Api Settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}

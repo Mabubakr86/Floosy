@@ -7,7 +7,7 @@ from django.utils.text import slugify
 
 class Wallet(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     slug = models.SlugField(blank=True,null=True)
     balance = models.DecimalField(max_digits=15, decimal_places=2, default=0)
 
@@ -44,7 +44,7 @@ class Category(models.Model):
 
 CHOICES = (('in','Income'),('out','Expenses'))
 class Ticket(models.Model):
-    wallet = models.ForeignKey(to=Wallet, on_delete=models.CASCADE)
+    wallet = models.ForeignKey(to=Wallet, on_delete=models.CASCADE, related_name='tickets')
     value = models.DecimalField(max_digits=15, decimal_places=2)
     kind = models.CharField(max_length=20, choices=CHOICES)
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, null=True)

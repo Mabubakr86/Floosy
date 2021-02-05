@@ -2,7 +2,7 @@ Frontend:
 wallets page when only one row
 confirm delete wallet page
 add wallet page
-add new category as nice link
+wallet tickets: pagination in center
 
 
 

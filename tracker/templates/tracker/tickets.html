@@ -1,263 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css">
-
-  <link rel="shortcut icon" href="favicon.png">
-  <title>FLOOSY | Tickets</title>
-</head>
-<body>
-
-  <!-- Navbar ---------->
-  <section class="bg-primary">
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %} | Tickets{% endblock title %}
+{% block content %}
+<!-- Tickets List ---------->
+<section>
     <div class="container">
-      <nav class="navbar navbar-expand-md navbar-dark bg-transparent">
-
-        <a class="navbar-brand mt-1" href="index.html">FLOOSY<img class="mb-1 ml-1" src="imgs/logo-icon.svg" alt=""></a>
-        
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link mt-1" href="index.html">
-                <img class="mb-1 mr-1" src="imgs/wallets-icon.svg" alt="">Wallets<span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mt-1" href="tickets.html"><img class="mb-1 mr-1" src="imgs/tickets-icon.svg" alt="">Tickets</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mt-1" href="stats.html"><img class="mb-1 mr-1" src="imgs/stats-icon.svg" alt="">Stats</a>
-            </li>
-
-            <li class="nav-item ml-md-4">
-              <a class="nav-link mt-1" href="#">
-                <span>Mohamed A.</span>
-                <img id="userAvatar" class="rounded-circle ml-2" src="imgs/avatar.jpg" alt="User's Avatar">
-              </a>
-            </li>
-          </ul>
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="sectionHeading">Tickets</h5>
+            </div>
         </div>
-      </nav>
-    </div>
-  </section>
-
-
-  <!-- Tickets List ---------->
-  <section>
-    <div class="container">
-
-      <div class="row mt-4">
-        <div class="col-12">
-          <h5 class="sectionHeading">Tickets</h5>
-        </div>
-      </div>
-
-      <div class="row">
-
-        <div class="col-md-3">
-          <div class="my-3 p-4 border rounded">
-            <form>
-
-              <div class="form-group">
-                <label for="inputDateFrom">Date</label>
-                <input type="date" class="form-control" id="inputDateFrom">
-              </div>
-
-              <div class="form-group">
-                <label for="inputValue">Value</label>
-                <div class="input-group mb-2 mr-sm-2">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">USD</div>
-                  </div>
-                  <input type="text" class="form-control" id="inputValue">
+        <div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" class="form-control"  placeholder="search " name="searchText">
+                    <input type="hidden" name="wallet" value="{{wallet.name}}">
                 </div>
-              </div>
-
-              <div class="form-group">
-                <label for="inputCategory">Category</label>
-                <select id="inputCategory" class="form-control">
-                  <option selected>Choose...</option>
-                  <option>Category 1</option>
-                  <option>Category 2</option>
-                  <option>Category 3</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="inputWallet">Wallet</label>
-                <select id="inputWallet" class="form-control">
-                  <option selected>Choose...</option>
-                  <option>Wallet 1</option>
-                  <option>Wallet 2</option>
-                  <option>Wallet 3</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary mt-2 col-12"><strong>SEARCH</strong></button>
-              </div>
-            
             </form>
-          </div>
+        </div>
+        <div class="row">
+            <div class="col" id="mainContent">
+                <div class="row">
+                    {% for ticket in page_tickets %}
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <div class="ticketItem my-3 bg-white rounded">
+                                <h5 class="blockHeading p-3 text-center text-primary">
+                                {{ticket.value}} <span class="text-dark">USD</span>
+                                <br>
+                                <small class="text-warning"><strong>{{ticket.wallet.name}}</strong></small>
+                                </h5>
+                                <div class="itemContent p-3">
+                                    <h6 class="ticketTitle">{{ticket.title}}</h6>
+                                    <p><span class="badge badge-primary mr-2">{{ticket.category.name}}</span><span class="badge badge-secondary">{{ticket.kind}}</span></p>
+                                    <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>{{ticket.date|date}}</span>  -  <span>{{ticket.date|time}}</span></p>
+                                    <p>{{ticket.desc}} <a href="">See More</a></p>
+                                    <div class="ticketControl text-center">
+                                        <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt="">Edit..</button>
+                                        <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt="">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!--                 
+                <div class="row my-3">
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-success">LOAD MORE</button>
+                    </div>
+                </div> 
+                -->
+
+            </div>
+            <div class="col" id="searchContent">
+                <div class="row" id="results">
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-9">
-          <div class="row">
-
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="ticketItem my-3 bg-white rounded">
-                <h5 class="blockHeading p-3 text-center text-primary">
-                  300 <span class="text-dark">USD</span>
-                  <br>
-                  <small class="text-warning"><strong>Wallet</strong></small>
-                </h5>
-                <div class="itemContent p-3">
-                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
-                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
-                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
-                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
-                  <div class="ticketControl text-center">
-                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
-                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="ticketItem my-3 bg-white rounded">
-                <h5 class="blockHeading p-3 text-center text-primary">
-                  300 <span class="text-dark">USD</span>
-                  <br>
-                  <small class="text-warning"><strong>Wallet</strong></small>
-                </h5>
-                <div class="itemContent p-3">
-                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
-                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
-                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
-                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
-                  <div class="ticketControl text-center">
-                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
-                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="ticketItem my-3 bg-white rounded">
-                <h5 class="blockHeading p-3 text-center text-primary">
-                  300 <span class="text-dark">USD</span>
-                  <br>
-                  <small class="text-warning"><strong>Wallet</strong></small>
-                </h5>
-                <div class="itemContent p-3">
-                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
-                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
-                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
-                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
-                  <div class="ticketControl text-center">
-                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
-                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="ticketItem my-3 bg-white rounded">
-                <h5 class="blockHeading p-3 text-center text-primary">
-                  300 <span class="text-dark">USD</span>
-                  <br>
-                  <small class="text-warning"><strong>Wallet</strong></small>
-                </h5>
-                <div class="itemContent p-3">
-                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
-                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
-                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
-                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
-                  <div class="ticketControl text-center">
-                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
-                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="ticketItem my-3 bg-white rounded">
-                <h5 class="blockHeading p-3 text-center text-primary">
-                  300 <span class="text-dark">USD</span>
-                  <br>
-                  <small class="text-warning"><strong>Wallet</strong></small>
-                </h5>
-                <div class="itemContent p-3">
-                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
-                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
-                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
-                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
-                  <div class="ticketControl text-center">
-                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
-                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-4">
-              <div class="ticketItem my-3 bg-white rounded">
-                <h5 class="blockHeading p-3 text-center text-primary">
-                  300 <span class="text-dark">USD</span>
-                  <br>
-                  <small class="text-warning"><strong>Wallet</strong></small>
-                </h5>
-                <div class="itemContent p-3">
-                  <h6 class="ticketTitle">Sed ut perspiciatis unde</h6>
-                  <p><span class="badge badge-primary mr-2">Pharmacy</span><span class="badge badge-secondary">Income</span></p>
-                  <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>12, Jan 2021</span>  -  <span>12:10PM</span></p>
-                  <p>Lorem ipsum dolor sit amet, consectetur incididunt ut dsa labore aliqua.. <a href="">See More</a></p>
-                  <div class="ticketControl text-center">
-                    <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt=""></button>
-                    <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt=""></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="row my-3">
-            <div class="col-12 text-center">
-              <button type="button" class="btn btn-success">LOAD MORE</button>
-            </div>
-          </div>
+<!-- Pagination -->
+        <div class="pagination2" id='pagination'>
+            {% if page_tickets %}
+                {% if page_tickets.has_previous %}
+                    <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+                    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+                {% for num in page_tickets.paginator.page_range %}
+                    {% if page_tickets.number == num %}
+                        <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% elif num > page_tickets.number|add:'-3' and num < page_tickets.number|add:'3' %}
+                        <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_tickets.has_next %}
+                    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+            {% endif %}
         </div>
-
-      </div>
-
     </div>
-  </section>
-
-  <footer class="bg-white mt-5 py-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 text-center">
-          <p class="m-0">Copyright © <strong>FLOOSY</strong> 2021</p>
+    <a id='endpoint' href='{% url "tracker:search_tickets" %}'></a>
+</section>
+{% endblock content %}
+{% block javascript %}
+<script type="text/javascript">
+var endpoint = document.getElementById('endpoint').getAttribute('href');
+const searchInput = document.getElementsByName('searchText')[0];
+const csrf = document.getElementsByName('csrfmiddlewaretoken');
+const wallet = document.getElementsByName('wallet')[0];
+const mainContent = document.getElementById('mainContent');
+const searchContent = document.getElementById('searchContent');
+searchContent.style.display="none";
+const results = document.getElementById('results');
+const pagination = document.getElementById('pagination');
+console.log(csrf)
+console.log(searchInput);
+searchInput.addEventListener("keyup",(e)=>{
+const searchText = e.target.value
+if(searchText.trim().length > 0 ){
+mainContent.style.display="none";
+pagination.style.display = "none";
+$.ajax({
+type:'POST',
+url:endpoint,
+data:{
+'csrfmiddlewaretoken':csrf[0].value,
+'searchText':searchText,
+'wallet':wallet.value,
+},
+success:function(response){
+console.log(response)
+if(response.length > 0){
+searchContent.style.display="block";
+results.innerHTML='';
+response.forEach((item)=>{
+console.log(item.value);
+results.innerHTML +=
+`
+<div class="col-12 col-sm-6 col-lg-3">
+    <div class="ticketItem my-3 bg-white rounded">
+        <h5 class="blockHeading p-3 text-center text-primary">
+        ${item.value} <span class="text-dark">USD</span>
+        <br>
+        <small class="text-warning"><strong>{{wallet.name}}</strong></small>
+        </h5>
+        <div class="itemContent p-3">
+            <h6 class="ticketTitle">${item.title}</h6>
+            <p><span class="badge badge-primary mr-2">${item.category}</span><span class="badge badge-secondary">${item.kind}</span></p>
+            <p>
+                <span>${item.date}</span>  -  <span>11:40 PM</span></p>
+                <p>${item.desc}<a href="">See More</a></p>
+                <div class="ticketControl text-center">
+                    <button type="button" class="btn btn-primary">
+                    Edit..</button>
+                    <button type="button" class="btn btn-danger">
+                    Remove</button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="js/jquery-3.5.1.slim.min.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="bootstrap/js/bootstrap.min.js"></script>
-</body>
-</html>
+        `
+        });
+        }
+        else
+        {searchContent.style.display="none"}
+        // cartTotal.innerHTML =`${response['order_total']}`
+        }
+        })}
+        else{mainContent.style.display="block";
+        pagination.style.display = "block";
+        searchContent.style.display="none";}
+        });
+        // searchInput.addEventListener("keyup",(e) => {
+        //     console.log(e.target.value);
+        //     console.log('kk');
+        // });
+        </script>
+    {% endblock javascript %}
+    <!-- <img class="mr-1" src="imgs/calendar-icon.svg" alt="">
+    <img src="imgs/edit-icon.svg" alt="">
+    <img src="imgs/delete-icon.svg" alt=""> -->

@@ -96,3 +96,6 @@ display: block;
 line-height: 1.428571429;
 color: #999;
 }
+#pagination2 {
+   justify-content: center;
+}

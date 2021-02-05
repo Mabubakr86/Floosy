@@ -14,4 +14,6 @@ urlpatterns = [
     path('add-category/',AddCategoryView.as_view(), name='add_category'),
     path('stats/',stats, name='stats'),
     path('tickets/', tickets, name='tickets'),
+    path('tickets/<slug:slug>/', wallettickets, name='wallet_tickets'),
+    path('search/',ajax_search, name='search_tickets'),
 ]
