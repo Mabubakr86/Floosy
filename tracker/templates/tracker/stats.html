@@ -1,207 +1,397 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-  <link rel="shortcut icon" href="{% static 'favicon.png' %}">
-  <title>FLOOSY | Home</title>
-</head>
-<body>
-
-  <!-- Navbar ---------->
-  <section class="bg-primary">
-    <div class="container">
-      <nav class="navbar navbar-expand-md navbar-dark bg-transparent">
-
-        <a class="navbar-brand mt-1" href="index.html">FLOOSY<img class="mb-1 ml-1" src="imgs/logo-icon.svg" alt=""></a>
-        
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link mt-1" href="index.html">
-                <img class="mb-1 mr-1" src="{% static 'imgs/wallets-icon.svg' %}" alt="">Wallets<span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mt-1" href="tickets.html"><img class="mb-1 mr-1" src="imgs/tickets-icon.svg" alt="">Tickets</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mt-1" href="stats.html"><img class="mb-1 mr-1" src="imgs/stats-icon.svg" alt="">Stats</a>
-            </li>
-
-            <li class="nav-item ml-md-4">
-              <a class="nav-link mt-1" href="#">
-                <span>Mohamed A.</span>
-                <img id="userAvatar" class="rounded-circle ml-2" src="imgs/avatar.jpg" alt="User's Avatar">
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block title %} | {{wallet.name}}-Stats{% endblock title %}
+{% block content %}
+<section>
+  <div class="container">
+    <div class="row mt-4">
+      <div class="col-12">
+        <h5 class="sectionHeading m-0">Stats</h5>
+      </div>
     </div>
-  </section>
-
-
-  <section>
-    <div class="container">
-
+    <div class="row">
+      <div class="block col-4 col-md-4 my-4 rounded">
+        <div class="card mt-2">
+          <div class="card-header blockHeading p-3 text-center text-primary" >
+            This week
+          </div>
+          <div class="card-body">
+            <p class="card-text">{% if week_sum %}{{week_sum}}{% else %}NA{% endif %}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 col-md-4 my-4 rounded">
+        <div class="card mt-2">
+          <div class="card-header  blockHeading p-3 text-center text-primary">
+            THIS MONTH
+          </div>
+          <div class="card-body">
+            <p class="card-text">{% if month_sum %}{{month_sum}}{% else %}NA{% endif %}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 col-md-4 my-4 rounded">
+        <div class="card mt-2">
+          <div class="card-header  blockHeading p-3 text-center text-primary">
+            THIS YEAR
+          </div>
+          <div class="card-body">
+            <p class="card-text">{% if year_sum %}{{year_sum}}{% else %}NA{% endif %}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--     <div class="row">
+      <div class="col-12">
+        <div class="block bg-white my-4 rounded"> -->
+          <!--           <div class="blockContent p-4">
+            -->            <form action="" method="POST">
+              {% csrf_token %}
+              <div class="form-row">
+                <div class="form-group col-lg-4">
+                  <label for="inputDateFrom">From</label>
+                  <input type="date" class="form-control" id="inputDateFrom" name="from">
+                </div>
+                <div class="form-group col-lg-4">
+                  <label for="inputDateTo">To</label>
+                  <input type="date" class="form-control" id="inputDateTo" name="to">
+                </div>
+                <div class="form-group col-lg-4">
+                  <label for="inputWallet">Kind</label>
+                  <select id="inputWallet" class="form-control" name="kind">
+                    <option selected>Choose...</option>
+                    <option>Expenses</option>
+                    <option>Income</option>
+                  </select>
+                </div>
+                <div class="form-group col-12">
+                  <button type="submit" class="btn btn-primary mt-2 col-12"><strong>SUBMIT</strong></button>
+                </div>
+              </div>
+            </form>
+          <!--           </div>
+        --><!--         </div>
+      </div>
+    </div> -->
+    {% if expense %}
       <div class="row mt-4">
         <div class="col-12">
-          <h5 class="sectionHeading m-0">Stats</h5>
+          <h5 class="sectionHeading m-0">EXPENSES</h5>
         </div>
       </div>
-
       <div class="row">
-        <div class="col-12">
-          <div class="block bg-white my-4 rounded">
-            <div class="blockContent p-4">
-              <form>
-
-                <div class="form-row">
-                  <div class="form-group col-lg-4">
-                    <label for="inputDateFrom">From</label>
-                    <input type="date" class="form-control" id="inputDateFrom">
-                  </div>
-
-                  <div class="form-group col-lg-4">
-                    <label for="inputDateTo">To</label>
-                    <input type="date" class="form-control" id="inputDateTo">
-                  </div>
-
-                  <div class="form-group col-lg-4">
-                    <label for="inputWallet">Wallet</label>
-                    <select id="inputWallet" class="form-control">
-                      <option selected>Choose...</option>
-                      <option>Wallet 1</option>
-                      <option>Wallet 2</option>
-                      <option>Wallet 3</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group col-12">
-                    <button type="submit" class="btn btn-primary mt-2 col-12"><strong>SUBMIT</strong></button>
-                  </div>
-
-                </div>
-              
-            </form>
+        <div class="col-12 col-md-4 my-4 rounded">
+          <div class="card mt-2">
+            <div class="card-header blockHeading p-3 text-center text-primary">
+              Total
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{expenses_total}}</p>
             </div>
           </div>
         </div>
-      </div>
-  
-      <div class="row">
-
-        <div class="col-12 col-md-4">
-          <div class="block bg-white my-4 rounded">
-            <h5 class="blockHeading p-3 text-center text-primary">Total Balance</h5>
-            <div class="blockContent p-4 text-center">
-              <h2 class="text-primary"><strong>5,145.60</strong></h2>
-              <h5><strong>USD</strong></h5>
+        <div class="col-12 col-md-4 my-4 rounded">
+          <div class="card mt-2">
+            <div class="card-header blockHeading p-3 text-center text-primary">
+              Maximum Card Date
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{max_expense_date|date:"d M-y"}}</p>
             </div>
           </div>
         </div>
-
-        <div class="col-12 col-md-8">
-          <div class="block bg-white my-4 p-4 rounded">
+        <div class="col-12 col-md-4 my-4 rounded">
+          <div class="card mt-2">
+            <div class="card-header blockHeading p-3 text-center text-primary">
+              Maximum Card Value
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{max_expense_value}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="block bg-white my-4 p-4 rounded" >
             <canvas id="statsPieChart"></canvas>
           </div>
         </div>
-
-      </div>
-
-
-
-      <div class="row">
-        <div class="col-12">
-          <div class="block bg-white my-4 rounded">
-            <div id="progressChart" class="blockContent p-4">
-              <div class="row">
-
-                <div class="col-md-2 py-1">
-                  <span><strong>Home</strong></span>
-                </div>
-                <div class="col-md-10">
-                  <div class="progress mb-3">
-                    <div class="progress-bar bg-danger rounded" role="progressbar" style="width: 80%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                    <span class="p-2">350 USD</span>
-                  </div>
-                </div>
-
-                <div class="col-md-2 py-1">
-                  <span><strong>Food</strong></span>
-                </div>
-                <div class="col-md-10">
-                  <div class="progress mb-3">
-                    <div class="progress-bar bg-warning rounded" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                    <span class="p-2">350 USD</span>
-                  </div>
-                </div>
-
-                <div class="col-md-2 py-1">
-                  <span><strong>Entertainment</strong></span>
-                </div>
-                <div class="col-md-10">
-                  <div class="progress mb-3">
-                    <div class="progress-bar bg-info rounded" role="progressbar" style="width: 55%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                    <span class="p-2">350 USD</span>
-                  </div>
-                </div>
-
-                <div class="col-md-2 py-1">
-                  <span><strong>Shopping</strong></span>
-                </div>
-                <div class="col-md-10">
-                  <div class="progress mb-3">
-                    <div class="progress-bar bg-success rounded" role="progressbar" style="width: 50%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                    <span class="p-2">350 USD</span>
-                  </div>
-                </div>
-
-                <div class="col-md-2 py-1">
-                  <span><strong>Bills</strong></span>
-                </div>
-                <div class="col-md-10">
-                  <div class="progress mb-3">
-                    <div class="progress-bar bg-primary rounded" role="progressbar" style="width: 40%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                    <span class="p-2">350 USD</span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
+        <div class="col-12 col-md-6">
+          <div class="block bg-white my-4 p-4 rounded" >
+            <canvas id="stats2PieChart"></canvas>
           </div>
         </div>
       </div>
 
-    </div>
-  </section>
+{% endif %}
+{% if income %}
 
-
-  <footer class="bg-white mt-5 py-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 text-center">
-          <p class="m-0">Copyright © <strong>FLOOSY</strong> 2021</p>
+            <div class="row mt-4">
+        <div class="col-12">
+          <h5 class="sectionHeading m-0">INCOME</h5>
         </div>
       </div>
-    </div>
-  </footer>
 
-  <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
-  <script src="{% static 'js/popper.min.js' %}"></script>
-  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
-  <script src="{% static 'chart.js/Chart.min.js' %}"></script>
-  <script src="{% static 'js/chartStats.js' %}"></script>
-</body>
-</html>
+     <div class="row">
+        <div class="col-12 col-md-4 my-4 rounded">
+          <div class="card mt-2">
+            <div class="card-header blockHeading p-3 text-center text-primary">
+              Total
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{income_total}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 my-4 rounded">
+          <div class="card mt-2">
+            <div class="card-header blockHeading p-3 text-center text-primary">
+              Maximum Card Date
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{max_income_date|date:"d M-y"}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 my-4 rounded">
+          <div class="card mt-2">
+            <div class="card-header blockHeading p-3 text-center text-primary">
+              Maximum Card Value
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{max_income_value}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="block bg-white my-4 p-4 rounded" >
+            <canvas id="stats3PieChart"></canvas>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="block bg-white my-4 p-4 rounded" >
+            <canvas id="stats4PieChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+
+<!--     {% else %}
+ -->      
+    {% endif %}
+  </div>
+</section>
+{% endblock content %}
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+
+<script type="text/javascript">
+var ctx = document.getElementById('statsPieChart').getContext('2d');
+var myChart = new Chart(ctx, {
+type: 'horizontalBar',
+data: {
+datasets: [{
+data: [{% for k,v in categories_expenses.items %}'{{v}}',{% endfor %}],
+backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745','#007bff'],
+label: 'Categories'
+}],
+labels: [{% for k,v in categories_expenses.items %}'{{k}}',{% endfor %}]
+},
+options: {
+legend: {
+align: 'start',
+position: 'right',
+},
+scales: {
+xAxes: [{
+gridLines: {
+display:false
+}
+}],
+yAxes: [{
+gridLines: {
+display:false
+}
+}]
+}
+}
+});
+
+
+// var test = '{%for k,v in expenses_log.items %}'new Date{{k}}'{% endfor %}'
+// console.log(test)
+// conts test = [{"date":{% for dte in expenses_log.items %} "2019-08-08T00:00:00Z", "y": 3 {% endfor %}}]
+
+// var chartData = [
+//   {"date": "2019-08-07T00:00:00Z", "y": 10},
+//   {"date": "2019-08-06T00:00:00Z", "y": 15},
+//   {"date": "2019-08-05T00:00:00Z", "y": 4},
+//   {"date": "2019-08-03T00:00:00Z", "y": 2},
+//   {"date": "2019-08-04T00:00:00Z", "y": 11},
+//   {"date": "2019-08-02T00:00:00Z", "y": 3},
+//   {"date": "2019-08-01T00:00:00Z", "y": 2},
+// ];
+
+var data = '{{expenses_log}}'
+var chartData = JSON.parse(data.replace(/(&quot\;)/g,"\""));
+// chartData = chartData.split()
+console.log(chartData)
+console.log(typeof chartData)
+
+// var chart2Data = JSON.parse(JSON.stringify('{{expenses_log}}'));
+// chart2Data= chart2Data.replace(/(&quot\;)/g,"\"");
+// console.log(chart2Data)
+// Parse the dates to JS
+chartData.forEach((d) => {
+  d.x = new Date(d.date);
+});
+console.log(chartData)
+
+var ctx2 = document.getElementById('stats2PieChart').getContext('2d');
+var myChart2 = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      datasets: [
+        {
+          label: 'new subscribers',
+          data: chartData,
+          backgroundColor: 'rgba(220,20,20,0.5)',
+        },
+      ],
+    },
+    options: {
+      // responsive: true,
+      scales: {
+        xAxes: [
+          {
+            type: 'time',
+            time: {
+              unit: 'day',
+              round: 'day',
+              displayFormats: {
+                day: 'D-MMM,Y',
+              },
+            },
+          },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
+  });
+
+// type: 'line',
+// data: {
+// datasets: [{
+// data: [50,70,90],
+// backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745','#007bff'],
+// label: 'Dataset 1'
+// }],
+// labels: [
+
+// d1,
+// d2,
+// d3
+
+// ]
+// },
+// options: {
+// legend: {
+// align: 'start',
+// position: 'right',
+// },
+// scales: {
+// xAxes: [{
+//  type: 'time',
+// time: {
+//   unit : 'month',
+// },
+// gridLines: {
+// display:false
+// }
+// }],
+// yAxes: [{
+// gridLines: {
+// display:false
+// }
+// }]
+// }
+// }
+// });
+
+
+
+
+// var ctx = document.getElementById('stats3PieChart').getContext('2d');
+// var myChart = new Chart(ctx, {
+// type: 'horizontalBar',
+// data: {
+// datasets: [{
+// data: [50,70,90],
+// backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745','#007bff'],
+// label: 'Dataset 1'
+// }],
+// labels: ['test','test2','test3']
+// },
+// options: {
+// legend: {
+// align: 'start',
+// position: 'right',
+// },
+// scales: {
+// xAxes: [{
+// gridLines: {
+// display:false
+// }
+// }],
+// yAxes: [{
+// gridLines: {
+// display:false
+// }
+// }]
+// }
+// }
+// });
+
+// var ctx = document.getElementById('stats4PieChart').getContext('2d');
+// var myChart = new Chart(ctx, {
+// type: 'horizontalBar',
+// data: {
+// datasets: [{
+// data: [50,70,90],
+// backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745','#007bff'],
+// label: 'Dataset 1'
+// }],
+// labels: ['test','test2','test3']
+// },
+// options: {
+// legend: {
+// align: 'start',
+// position: 'right',
+// },
+// scales: {
+// xAxes: [{
+// gridLines: {
+// display:false
+// }
+// }],
+// yAxes: [{
+// gridLines: {
+// display:false
+// }
+// }]
+// }
+// }
+// });
+
+
+
+</script>
+{% endblock javascript %}

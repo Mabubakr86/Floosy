@@ -32,8 +32,11 @@
         <a href="{% url 'tracker:wallet_tickets' wallet.slug %}">
           <button type="button" class="btn btn-primary w-100 mb-4"><strong>SHOW TICKETS</strong></button>
         </a>
+        <a href="{% url 'tracker:stats' wallet.slug %}">
+          <button type="button" class="btn btn-warning w-100 mb-4"><strong>SHOW STATS</strong></button>
+        </a>
         <a href="{% url 'tracker:add_category' %}">
-          <button type="button" class="btn btn-primary w-100 mb-4"><strong>Add New Category</strong></button>
+          <button type="button" class="btn btn-success w-100 mb-4"><strong>Add New Category</strong></button>
         </a>
       </div>
       <div class="col-12 col-md-8">
@@ -107,11 +110,34 @@
 </section>
 {% endblock content %}
 {% block javascript %}
-<script src="{% static 'chart.js/Chart.min.js' %}"></script>
-<script src="{% static 'js/chartWallet.js' %}"></script>
+
 <script type="text/javascript">
 $(function () {
 $('#datetimepicker1').datetimepicker();
 });
+
+
+var ctx = document.getElementById('walletPieChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [{%for k,v in data.items%}'{{v}}',{%endfor%}],
+      backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745','#007bff'],
+      label: 'Dataset 1'
+    }],
+    labels: [{%for k,v in data.items%}'{{k}}',{%endfor%}]
+  },
+  
+  options: {
+
+    legend: {
+      align: 'start',
+      position: 'right',
+    },
+
+  }
+});
+
 </script>
 {% endblock javascript %}

@@ -25,8 +25,9 @@ SECRET_KEY = 'uf*z0mvn)qirn0gv9p^dc5(5+m_mk+)9**k@1^0o+ucs!goxh1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['192.168.43.95']
 
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -88,6 +89,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 
 # Password validation

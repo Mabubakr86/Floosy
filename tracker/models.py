@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import  reverse
 from django.utils.text import slugify
+from django.db.models.signals import pre_delete, post_delete
+from django.dispatch import receiver
 
 
 class Wallet(models.Model):
@@ -20,6 +22,7 @@ class Wallet(models.Model):
         return reverse(viewname='tracker:wallet', kwargs={'slug':self.slug})
 
 
+    
     def __str__(self):
         return self.name
 
@@ -44,7 +47,7 @@ class Category(models.Model):
 
 CHOICES = (('in','Income'),('out','Expenses'))
 class Ticket(models.Model):
-    wallet = models.ForeignKey(to=Wallet, on_delete=models.CASCADE, related_name='tickets')
+    wallet = models.ForeignKey(to=Wallet, on_delete=models.DO_NOTHING, related_name='tickets')
     value = models.DecimalField(max_digits=15, decimal_places=2)
     kind = models.CharField(max_length=20, choices=CHOICES)
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE, null=True)
@@ -65,6 +68,17 @@ class Ticket(models.Model):
         wallet.save()
         super(Ticket, self).save(*args,**kwargs)
 
+
     def __str__(self):
         return f"{self.title}-{self.value}"
+
+
+def remove_ticket(sender, instance, **kwargs):
+    wallet = instance.wallet
+    wallet.balance = wallet.balance - instance.value
+    wallet.save()
+    print(wallet)
+    # Book.objects.filter(author_id=author_id).delete()
+
+pre_delete.connect(remove_ticket, sender=Ticket)
 

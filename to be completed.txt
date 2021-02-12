@@ -7,5 +7,7 @@ wallet tickets: pagination in center
 
 
 Backend:
+income section in stats 
+testing for new users and bug when selectin bad
 categories (edit & delete one category), deleteting all related tickets and adjusting balance
 currency based on country

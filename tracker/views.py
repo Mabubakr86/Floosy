@@ -6,8 +6,12 @@ from django.urls import  reverse, reverse_lazy
 from bootstrap_modal_forms.generic import BSModalCreateView
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+from django.contrib import messages
+from django.db.models import Sum
 import json
-from django.db.models import Q
+from django.db.models import Q, Sum
+from django.utils import timezone
+from datetime import datetime, timedelta, time
 from .models import Wallet, Ticket
 from .forms import WalletForm, CategoryForm, TicketForm
 # from .models import *
@@ -47,6 +51,14 @@ class DeleteWalletView(LoginRequiredMixin,DeleteView):
 def wallet(request,slug):
     wallet = get_object_or_404(Wallet, slug=slug,owner=request.user)
     categories = wallet.category_set.all()
+    tickets = wallet.tickets.filter(kind='out')
+    data = {}
+    for ticket in tickets:
+        cat_name = ticket.category.name
+        if not (cat_name in data.keys()):
+            data[cat_name]=float(ticket.value)
+        else:
+            data[cat_name]= data[cat_name]+float(ticket.value)
     form = TicketForm(wallet,request.POST or None)
     if request.method == "POST":
         if form.is_valid():
@@ -55,7 +67,8 @@ def wallet(request,slug):
             myform.save()
             return redirect(reverse(viewname='tracker:wallet', kwargs={'slug':wallet.slug}))
     
-    context = {'wallet':wallet, 'categories':categories, 'form':form}
+    context = {'wallet':wallet, 'categories':categories, 'form':form
+    , 'data':data}
     return render(request, 'tracker/wallet.html',context)
 
 
@@ -72,15 +85,130 @@ class AddCategoryView(CreateView):
     # success_url = reverse_lazy(viewname='tracker:wallet', kwargs={'slug':self.form.instance.wallet})
 
 
-# def search_ajax(request):
-#     if request.method == "POST":
-#         data = json.loads(request.body).get('searchText')
-
-
 @login_required()
-def stats(request):
-    return render(request, template_name='tracker/stats.html')
-    user_tickets = Ticket.objects.filter(wallet__owner=request.user)
+def stats(request, slug):
+    # Set initial values:
+    expense = False
+    income = False
+
+    expenses_total = "NA"
+    max_expense_date = "NA"
+    max_expense_value = "NA"
+    categories_expenses = "NA"
+    expenses_log = "NA"
+
+
+    income_total = "NA"
+    max_income_date = "NA"
+    max_income_value = "NA"
+    categories_incomes = "NA"
+    # expenses_log = "NA"
+
+
+
+    # Get start of Week, Month, and Year
+    today = datetime.today()
+    week_start = today-timedelta(days=today.weekday())
+    month_start = today-timedelta(days=today.day)
+    year_start = today-timedelta(weeks=today.isocalendar()[1])
+    # Get the proper tickets
+    wallet = get_object_or_404(Wallet, slug=slug,owner=request.user)
+    categories = wallet.category_set.all()
+    expense_tickets = wallet.tickets.filter(kind='out')
+    income_tickets = wallet.tickets.filter(kind='in')
+    # start to populate context
+    week_sum = expense_tickets.filter(Q(date__gte=week_start)&
+        Q(date__lte=timezone.now())).aggregate(week_sum=Sum('value'))['week_sum']
+    month_sum = expense_tickets.filter(Q(date__gte=month_start)&
+        Q(date__lte=timezone.now())).aggregate(month_sum=Sum('value'))['month_sum']
+    year_sum = expense_tickets.filter(Q(date__gte=year_start)&
+        Q(date__lte=timezone.now())).aggregate(year_sum=Sum('value'))['year_sum']
+
+    if week_sum:
+        week_sum = float(week_sum)
+    if month_sum:
+        month_sum = float(month_sum)
+    if year_sum:
+        year_sum = float(year_sum)
+
+    if request.method == 'POST':
+        from_ = request.POST.get('from')
+        to = request.POST.get('to')
+        kind = request.POST.get('kind')
+        from_ = datetime.strptime(from_, "%Y-%m-%d")
+        to = datetime.strptime(to, "%Y-%m-%d")
+        # Dealing with expenses:
+        if kind == 'Expenses':
+            expense = True
+            expenses = expense_tickets.filter(Q(date__gte=from_)&Q(date__lte=to))
+            expenses_total = expenses.aggregate(total=Sum('value'))['total']
+            if expenses_total:
+                expenses_total = float(expenses_total)
+            max_card = expenses.order_by('-value').first()
+            max_expense_date = max_card.date
+            max_expense_value = float(max_card.value)
+
+            # Polpulate Categories chart
+            categories_expenses = {}
+            for ticket in expenses:
+                cat_name = ticket.category.name
+                if not (cat_name in categories_expenses.keys()):
+                    categories_expenses[cat_name]=float(ticket.value)
+                else:
+                    categories_expenses[cat_name]= categories_expenses[cat_name]+float(ticket.value)
+            # Populate Date Chart
+            repeated_dates = []
+            expenses_log =[]
+            for ticket in expenses:
+                t = {}
+                value = ticket.value
+                date = ticket.date
+                date = str(date.date())
+                # to sum up tickets with the same date
+                if date not in repeated_dates:
+                    t['date'] = str(date)
+                    t['y'] = float(value)
+                    repeated_dates.append(date)
+                    expenses_log.append(t)
+                else:
+                    for card in expenses_log:
+                        if date == card['date']:
+                            last_value = card['y']
+                            card['y'] = last_value + float(value)
+            expenses_log = json.dumps(expenses_log)
+            expense = True
+
+        # if selected Income
+        elif kind == 'Income':
+            incomes = income_tickets.filter(Q(date__gte=from_)&Q(date__lte=to))
+            income_total = incomes.aggregate(total=Sum('value'))['total']
+            if income_total:
+                income_total = float(income_total)
+            max_card = incomes.order_by('-value').first()
+            max_income_date = max_card.date
+            max_income_value = float(max_card.value)
+
+            # Polpulate Categories chart
+            categories_incomes = {}
+            for ticket in incomes:
+                cat_name = ticket.category.name
+                if not (cat_name in categories_incomes.keys()):
+                    categories_incomes[cat_name]=float(ticket.value)
+                else:
+                    categories_incomes[cat_name]= categories_incomes[cat_name]+float(ticket.value)
+            income = True
+
+        redirect(reverse('tracker:stats',kwargs={'slug':slug}))
+
+    context = {'expense':expense,'week_sum':week_sum,
+    'month_sum':month_sum,'year_sum':year_sum,'expenses_total':expenses_total,
+    'max_expense_date':max_expense_date,'max_expense_value':max_expense_value,
+    'categories_expenses': categories_expenses,'expenses_log':expenses_log,
+    'income_total': income_total,'max_expense_date': max_income_date, 
+    'max_expense_value':max_expense_value,'categories_incomes': categories_incomes,
+
+    }
+    return render(request, template_name='tracker/stats.html', context=context)
 
 @login_required()
 def tickets(request,slug):
@@ -92,12 +220,36 @@ def tickets(request,slug):
 def wallettickets(request,slug):
     wallet = get_object_or_404(Wallet,slug=slug, owner=request.user)
     tickets = Ticket.objects.filter(wallet=wallet)
-    paginator = Paginator(tickets, 8)
+    paginator = Paginator(tickets, 12)
     page_number = request.GET.get('page')
     page_tickets = paginator.get_page(page_number)
     context = {'tickets':tickets, 'wallet':wallet, 'page_tickets':page_tickets}
     return render(request, template_name='tracker/tickets.html', context=context)
 
+@login_required()
+def edit_ticket(request,id):
+    ticket = get_object_or_404(Ticket,id=id)
+    wallet = ticket.wallet
+    old_value = ticket.value
+    if request.method == 'POST':
+        form = TicketForm(wallet, request.POST, instance=ticket )
+        if form.is_valid():
+            new_value = form.cleaned_data['value']
+            diff = new_value-old_value
+            wallet.balance = wallet.balance + diff
+            wallet.save()
+            form.save()
+            messages.success(request,'Ticket has been modified')
+            return redirect(reverse(viewname='tracker:wallet', kwargs={'slug':wallet.slug}))
+    form = TicketForm(wallet,instance=ticket )
+
+    context = {'ticket':ticket, 'form':form, 'wallet':wallet}
+    return render(request, 'tracker/edit_ticket.html', context=context)
+
+class TicketDeleteView(DeleteView):
+    model = Ticket
+    def get_success_url(self):
+        return reverse(viewname='tracker:wallets')
 
 @login_required()
 def ajax_search(request):

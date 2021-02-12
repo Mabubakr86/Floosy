@@ -12,8 +12,11 @@ urlpatterns = [
     path('wallet/<slug:slug>/edit',EditWalletView.as_view(),name='edit_wallet'),
     path('wallet/<slug:slug>/delete',DeleteWalletView.as_view(),name='delete_wallet'),
     path('add-category/',AddCategoryView.as_view(), name='add_category'),
-    path('stats/',stats, name='stats'),
+    path('stats/<slug:slug>/',stats, name='stats'),
     path('tickets/', tickets, name='tickets'),
     path('tickets/<slug:slug>/', wallettickets, name='wallet_tickets'),
     path('search/',ajax_search, name='search_tickets'),
+    path('edit-ticket/<int:id>', edit_ticket,name='edit_ticket'),
+    path('delete-ticket/<int:pk>', TicketDeleteView.as_view(),name='delete_ticket'),
+
 ]

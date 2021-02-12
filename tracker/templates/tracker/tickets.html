@@ -37,8 +37,14 @@
                                     <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>{{ticket.date|date}}</span>  -  <span>{{ticket.date|time}}</span></p>
                                     <p>{{ticket.desc}} <a href="">See More</a></p>
                                     <div class="ticketControl text-center">
-                                        <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt="">Edit..</button>
-                                        <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt="">Remove</button>
+                                        <a href="{% url 'tracker:edit_ticket' ticket.id %}">
+                                           <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt="">Edit..</button>
+                                        </a>
+                                        <a href="{% url 'tracker:delete_ticket' ticket.id %}">
+                                            <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt="">Remove</button>
+                                        </a>
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>
