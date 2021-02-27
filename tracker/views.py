@@ -87,7 +87,7 @@ def wallet(request,slug):
     return render(request, 'tracker/wallet.html',context)
 
 
-class AddCategoryView(CreateView):
+class AddCategoryView(LoginRequiredMixin,CreateView):
     template_name = 'tracker/add_category.html'
     form_class = CategoryForm
     success_message = 'Success: Category was addded.'
@@ -298,7 +298,7 @@ def edit_ticket(request,id):
     context = {'ticket':ticket, 'form':form, 'wallet':wallet}
     return render(request, 'tracker/edit_ticket.html', context=context)
 
-class TicketDeleteView(DeleteView):
+class TicketDeleteView(LoginRequiredMixin,DeleteView):
     model = Ticket
     def get_success_url(self):
         return reverse(viewname='tracker:wallets')
