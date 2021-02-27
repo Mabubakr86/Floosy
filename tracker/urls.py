@@ -1,11 +1,12 @@
 from django.urls import path
 from .views import *
-
+from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView
 
 app_name='tracker'
 
 urlpatterns = [
+    path('test/',TemplateView.as_view(template_name='tracker/index.html')),
     path('', WalletsView.as_view(), name='wallets'),
     path('add-wallet/',AddWalletView.as_view(),name='add_wallet'),
     path('wallet/<slug:slug>', wallet, name='wallet'),

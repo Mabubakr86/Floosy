@@ -20,8 +20,6 @@ class Wallet(models.Model):
 
     def get_absolute_url(self):
         return reverse(viewname='tracker:wallet', kwargs={'slug':self.slug})
-
-
     
     def __str__(self):
         return self.name
@@ -34,7 +32,6 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = 'Categories'
-
 
     def save(self,*args,**kwargs):
         if self.name:     
@@ -75,8 +72,13 @@ class Ticket(models.Model):
 
 def remove_ticket(sender, instance, **kwargs):
     wallet = instance.wallet
-    wallet.balance = wallet.balance - instance.value
+    if instance.kind == 'in':
+        wallet.balance -= instance.value
+    elif instance.kind == 'out':
+        wallet.balance += instance.value  
+    # wallet.balance = wallet.balance - instance.value
     wallet.save()
+    print(instance.kind)
     print(wallet)
     # Book.objects.filter(author_id=author_id).delete()
 

@@ -24,10 +24,10 @@
             <div class="col" id="mainContent">
                 <div class="row">
                     {% for ticket in page_tickets %}
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="col-12 col-sm-6 col-lg-3" >
                             <div class="ticketItem my-3 bg-white rounded">
                                 <h5 class="blockHeading p-3 text-center text-primary">
-                                {{ticket.value}} <span class="text-dark">USD</span>
+                                {{ticket.value}} <span class="text-dark">EGP</span>
                                 <br>
                                 <small class="text-warning"><strong>{{ticket.wallet.name}}</strong></small>
                                 </h5>
@@ -35,136 +35,145 @@
                                     <h6 class="ticketTitle">{{ticket.title}}</h6>
                                     <p><span class="badge badge-primary mr-2">{{ticket.category.name}}</span><span class="badge badge-secondary">{{ticket.kind}}</span></p>
                                     <p><img class="mr-1" src="imgs/calendar-icon.svg" alt=""><span>{{ticket.date|date}}</span>  -  <span>{{ticket.date|time}}</span></p>
-                                    <p>{{ticket.desc}} <a href="">See More</a></p>
-                                    <div class="ticketControl text-center">
-                                        <a href="{% url 'tracker:edit_ticket' ticket.id %}">
-                                           <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt="">Edit..</button>
-                                        </a>
-                                        <a href="{% url 'tracker:delete_ticket' ticket.id %}">
-                                            <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt="">Remove</button>
-                                        </a>
-                                        
-                                        
+                                    <p>{{ticket.desc|slice:":100"}}
+                                        <!-- <a href="">See More</a> --></p>
+                                        <div class="ticketControl text-center">
+                                            <a href="{% url 'tracker:edit_ticket' ticket.id %}">
+                                                <button type="button" class="btn btn-primary"><img src="imgs/edit-icon.svg" alt="">Edit..</button>
+                                            </a>
+                                            <a href="{% url 'tracker:delete_ticket' ticket.id %}">
+                                                <button type="button" class="btn btn-danger"><img src="imgs/delete-icon.svg" alt="">Remove</button>
+                                            </a>
+                                            
+                                            
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>
-
-                <!--                 
-                <div class="row my-3">
-                    <div class="col-12 text-center">
-                        <button type="button" class="btn btn-success">LOAD MORE</button>
+                        {% endfor %}
                     </div>
-                </div> 
-                -->
-
-            </div>
-            <div class="col" id="searchContent">
-                <div class="row" id="results">
+                    <!--
+                    <div class="row my-3">
+                        <div class="col-12 text-center">
+                            <button type="button" class="btn btn-success">LOAD MORE</button>
+                        </div>
+                    </div>
+                    -->
+                </div>
+                <div class="col" id="searchContent">
+                    <div class="row" id="results">
+                    </div>
                 </div>
             </div>
+            <!-- id='pagination'
+            --><!-- Pagination -->
         </div>
 
-<!-- Pagination -->
-        <div class="pagination2" id='pagination'>
-            {% if page_tickets %}
-                {% if page_tickets.has_previous %}
-                    <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-                    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                {% endif %}
-                {% for num in page_tickets.paginator.page_range %}
-                    {% if page_tickets.number == num %}
-                        <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
-                        {% elif num > page_tickets.number|add:'-3' and num < page_tickets.number|add:'3' %}
-                        <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        <a id='endpoint' href='{% url "tracker:search_tickets" %}'></a>
+    </section>
+        <div class="row">
+            <div class="col-4">
+                
+            </div>
+            <div class="col-4">
+                <div class="align-middle">
+                    {% if page_tickets %}
+                        {% if page_tickets.has_previous %}
+                            <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+                            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        {% for num in page_tickets.paginator.page_range %}
+                            {% if page_tickets.number == num %}
+                                <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                                {% elif num > page_tickets.number|add:'-3' and num < page_tickets.number|add:'3' %}
+                                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_tickets.has_next %}
+                            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                        {% endif %}
                     {% endif %}
-                {% endfor %}
-                {% if page_tickets.has_next %}
-                    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-                    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-                {% endif %}
-            {% endif %}
+                </div>
+            </div>
+            <div class="col-4">
+            </div>
         </div>
-    </div>
-    <a id='endpoint' href='{% url "tracker:search_tickets" %}'></a>
-</section>
 {% endblock content %}
 {% block javascript %}
-<script type="text/javascript">
-var endpoint = document.getElementById('endpoint').getAttribute('href');
-const searchInput = document.getElementsByName('searchText')[0];
-const csrf = document.getElementsByName('csrfmiddlewaretoken');
-const wallet = document.getElementsByName('wallet')[0];
-const mainContent = document.getElementById('mainContent');
-const searchContent = document.getElementById('searchContent');
-searchContent.style.display="none";
-const results = document.getElementById('results');
-const pagination = document.getElementById('pagination');
-console.log(csrf)
-console.log(searchInput);
-searchInput.addEventListener("keyup",(e)=>{
-const searchText = e.target.value
-if(searchText.trim().length > 0 ){
-mainContent.style.display="none";
-pagination.style.display = "none";
-$.ajax({
-type:'POST',
-url:endpoint,
-data:{
-'csrfmiddlewaretoken':csrf[0].value,
-'searchText':searchText,
-'wallet':wallet.value,
-},
-success:function(response){
-console.log(response)
-if(response.length > 0){
-searchContent.style.display="block";
-results.innerHTML='';
-response.forEach((item)=>{
-console.log(item.value);
-results.innerHTML +=
-`
-<div class="col-12 col-sm-6 col-lg-3">
-    <div class="ticketItem my-3 bg-white rounded">
-        <h5 class="blockHeading p-3 text-center text-primary">
-        ${item.value} <span class="text-dark">USD</span>
-        <br>
-        <small class="text-warning"><strong>{{wallet.name}}</strong></small>
-        </h5>
-        <div class="itemContent p-3">
-            <h6 class="ticketTitle">${item.title}</h6>
-            <p><span class="badge badge-primary mr-2">${item.category}</span><span class="badge badge-secondary">${item.kind}</span></p>
-            <p>
-                <span>${item.date}</span>  -  <span>11:40 PM</span></p>
-                <p>${item.desc}<a href="">See More</a></p>
-                <div class="ticketControl text-center">
-                    <button type="button" class="btn btn-primary">
-                    Edit..</button>
-                    <button type="button" class="btn btn-danger">
-                    Remove</button>
+    <script type="text/javascript">
+    var endpoint = document.getElementById('endpoint').getAttribute('href');
+    const searchInput = document.getElementsByName('searchText')[0];
+    const csrf = document.getElementsByName('csrfmiddlewaretoken');
+    const wallet = document.getElementsByName('wallet')[0];
+    const mainContent = document.getElementById('mainContent');
+    const searchContent = document.getElementById('searchContent');
+    searchContent.style.display="none";
+    const results = document.getElementById('results');
+    const pagination = document.getElementById('pagination');
+    console.log(csrf)
+    console.log(searchInput);
+    searchInput.addEventListener("keyup",(e)=>{
+    const searchText = e.target.value
+    if(searchText.trim().length > 0 ){
+    mainContent.style.display="none";
+    pagination.style.display = "none";
+    $.ajax({
+    type:'POST',
+    url:endpoint,
+    data:{
+    'csrfmiddlewaretoken':csrf[0].value,
+    'searchText':searchText,
+    'wallet':wallet.value,
+    },
+    success:function(response){
+    console.log(response)
+    if(response.length > 0){
+    searchContent.style.display="block";
+    results.innerHTML='';
+    response.forEach((item)=>{
+    console.log(item.value);
+    results.innerHTML +=
+    `
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="ticketItem my-3 bg-white rounded">
+            <h5 class="blockHeading p-3 text-center text-primary">
+            ${item.value} <span class="text-dark">USD</span>
+            <br>
+            <small class="text-warning"><strong>{{wallet.name}}</strong></small>
+            </h5>
+            <div class="itemContent p-3">
+                <h6 class="ticketTitle">${item.title}</h6>
+                <p><span class="badge badge-primary mr-2">${item.category}</span><span class="badge badge-secondary">${item.kind}</span></p>
+                <p>
+                    <span>${item.date}</span>  -  <span>11:40 PM</span></p>
+                    <p>${item.desc}<a href="">See More</a></p>
+                    <div class="ticketControl text-center">
+                        <button type="button" class="btn btn-primary">
+                        Edit..</button>
+                        <button type="button" class="btn btn-danger">
+                        Remove</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        `
-        });
-        }
-        else
-        {searchContent.style.display="none"}
-        // cartTotal.innerHTML =`${response['order_total']}`
-        }
-        })}
-        else{mainContent.style.display="block";
-        pagination.style.display = "block";
-        searchContent.style.display="none";}
-        });
-        // searchInput.addEventListener("keyup",(e) => {
-        //     console.log(e.target.value);
-        //     console.log('kk');
-        // });
-        </script>
-    {% endblock javascript %}
-    <!-- <img class="mr-1" src="imgs/calendar-icon.svg" alt="">
-    <img src="imgs/edit-icon.svg" alt="">
-    <img src="imgs/delete-icon.svg" alt=""> -->
+            `
+            });
+            }
+            else
+            {searchContent.style.display="none"}
+            // cartTotal.innerHTML =`${response['order_total']}`
+            }
+            })}
+            else{mainContent.style.display="block";
+            pagination.style.display = "block";
+            searchContent.style.display="none";}
+            });
+            // searchInput.addEventListener("keyup",(e) => {
+            //     console.log(e.target.value);
+            //     console.log('kk');
+            // });
+            </script>
+        {% endblock javascript %}
+        <!-- <img class="mr-1" src="imgs/calendar-icon.svg" alt="">
+        <img src="imgs/edit-icon.svg" alt="">
+        <img src="imgs/delete-icon.svg" alt=""> -->

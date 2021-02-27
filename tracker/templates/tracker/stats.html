@@ -18,7 +18,7 @@
             This week
           </div>
           <div class="card-body">
-            <p class="card-text">{% if week_sum %}{{week_sum}}{% else %}NA{% endif %}</p>
+            <p class="card-text text-center">{% if week_sum %}{{week_sum}}{% else %}No Matching Data{% endif %}</p>
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
             THIS MONTH
           </div>
           <div class="card-body">
-            <p class="card-text">{% if month_sum %}{{month_sum}}{% else %}NA{% endif %}</p>
+            <p class="card-text text-center">{% if month_sum %}{{month_sum}}{% else %}No Matching Data{% endif %}</p>
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
             THIS YEAR
           </div>
           <div class="card-body">
-            <p class="card-text">{% if year_sum %}{{year_sum}}{% else %}NA{% endif %}</p>
+            <p class="card-text text-center">{% if year_sum %}{{year_sum}}{% else %}No Matching Data{% endif %}</p>
           </div>
         </div>
       </div>
@@ -52,15 +52,15 @@
               <div class="form-row">
                 <div class="form-group col-lg-4">
                   <label for="inputDateFrom">From</label>
-                  <input type="date" class="form-control" id="inputDateFrom" name="from">
+                  <input type="date" class="form-control" id="inputDateFrom" name="from" required>
                 </div>
                 <div class="form-group col-lg-4">
                   <label for="inputDateTo">To</label>
-                  <input type="date" class="form-control" id="inputDateTo" name="to">
+                  <input type="date" class="form-control" id="inputDateTo" name="to" max="{{today}}" onchange="dateHandler()" required>
                 </div>
                 <div class="form-group col-lg-4">
                   <label for="inputWallet">Kind</label>
-                  <select id="inputWallet" class="form-control" name="kind">
+                  <select id="inputWallet" class="form-control" name="kind" required>
                     <option selected>Choose...</option>
                     <option>Expenses</option>
                     <option>Income</option>
@@ -88,7 +88,11 @@
               Total
             </div>
             <div class="card-body">
-              <p class="card-text">{{expenses_total}}</p>
+              {% if expenses_total %}
+              <p class="card-text text-center">{{expenses_total}}</p>
+              {% else %}
+              <p class="card-text text-center">No Matching Data</p>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -98,7 +102,11 @@
               Maximum Card Date
             </div>
             <div class="card-body">
-              <p class="card-text">{{max_expense_date|date:"d M-y"}}</p>
+              {% if max_expense_date %}
+              <p class="card-text text-center">{{max_expense_date|date:"d M-y"}}</p>
+              {% else %}
+              <p class="card-text text-center">No Matching Data</p>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -108,10 +116,11 @@
               Maximum Card Value
             </div>
             <div class="card-body">
-              <p class="card-text">{{max_expense_value}}</p>
+              <p class="card-text text-center">{{max_expense_value}}</p>
             </div>
           </div>
         </div>
+{% if graph %}
         <div class="col-12 col-md-6">
           <div class="block bg-white my-4 p-4 rounded" >
             <canvas id="statsPieChart"></canvas>
@@ -122,26 +131,28 @@
             <canvas id="stats2PieChart"></canvas>
           </div>
         </div>
-      </div>
-
 {% endif %}
-{% if income %}
 
-            <div class="row mt-4">
+      </div>
+    {% endif %}
+    {% if income %}
+      <div class="row mt-4">
         <div class="col-12">
           <h5 class="sectionHeading m-0">INCOME</h5>
         </div>
       </div>
-
-
-     <div class="row">
+      <div class="row">
         <div class="col-12 col-md-4 my-4 rounded">
           <div class="card mt-2">
             <div class="card-header blockHeading p-3 text-center text-primary">
               Total
             </div>
             <div class="card-body">
-              <p class="card-text">{{income_total}}</p>
+              {% if income_total %}
+              <p class="card-text text-center">{{income_total}}</p>
+              {% else %}
+              <p class="card-text text-center">No Matching Data</p>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -151,7 +162,11 @@
               Maximum Card Date
             </div>
             <div class="card-body">
-              <p class="card-text">{{max_income_date|date:"d M-y"}}</p>
+              {% if max_income_date %}
+              <p class="card-text text-center">{{max_income_date|date:"d M-y"}}</p>
+              {% else %}
+              <p class="card-text text-center">No Matching Data</p>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -161,10 +176,13 @@
               Maximum Card Value
             </div>
             <div class="card-body">
-              <p class="card-text">{{max_income_value}}</p>
+              <p class="card-text text-center">{{max_income_value}}</p>
             </div>
           </div>
         </div>
+
+{% if graph %}
+
         <div class="col-12 col-md-6">
           <div class="block bg-white my-4 p-4 rounded" >
             <canvas id="stats3PieChart"></canvas>
@@ -175,19 +193,41 @@
             <canvas id="stats4PieChart"></canvas>
           </div>
         </div>
+{% endif %}
       </div>
-
-
-<!--     {% else %}
- -->      
     {% endif %}
   </div>
 </section>
 {% endblock content %}
 {% block javascript %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-
 <script type="text/javascript">
+
+var start_date = document.getElementById('inputDateFrom');
+var end_date = document.getElementById('inputDateTo');
+
+
+function dateHandler() {
+
+console.log(start_date.value);
+console.log(end_date.value);
+
+if(end_date.value<start_date.value){
+  alert('End date is before start date')
+
+}
+
+
+}
+
+
+
+
+
+// Expenses_Category_Chart
+
+if (document.getElementById('statsPieChart') !== null){
+
 var ctx = document.getElementById('statsPieChart').getContext('2d');
 var myChart = new Chart(ctx, {
 type: 'horizontalBar',
@@ -201,197 +241,181 @@ labels: [{% for k,v in categories_expenses.items %}'{{k}}',{% endfor %}]
 },
 options: {
 legend: {
+display:false,
 align: 'start',
 position: 'right',
+},
+scales: 
+{
+xAxes:
+[{
+gridLines: {
+display:true
+}
+}]
+,
+yAxes:
+ [{
+gridLines: {
+display:true
+}
+}]
+// [{ticks: {mirror: true}}]
+}
+}
+});
+
+}
+
+// Expenses_Date_Chart
+
+if (document.getElementById('stats2PieChart') !== null){
+
+var data = '{{expenses_log}}'
+var chartData = JSON.parse(data.replace(/(&quot\;)/g,"\""));
+
+chartData.forEach((d) => {
+d.x = new Date(d.date);
+});
+console.log(chartData)
+var ctx2 = document.getElementById('stats2PieChart').getContext('2d');
+var myChart2 = new Chart(ctx2, {
+type: 'bar',
+data: {
+datasets: [
+{
+label: 'Date Log',
+data: chartData,
+backgroundColor: '#fd7e14',
+},
+],
+},
+options: {
+legend: {
+display:false,
+align: 'start',
+position: 'right',
+},
+// responsive: true,
+scales: {
+xAxes: [
+{
+type: 'time',
+time: {
+unit: 'day',
+round: 'day',
+displayFormats: {
+day: 'D-MMM-Y',
+},
+},
+},
+],
+yAxes: [
+{
+ticks: {
+beginAtZero: true,
+},
+},
+],
+},
+},
+});
+
+}
+
+// Income_Category_Chart
+
+if (document.getElementById('stats3PieChart') !== null){
+
+var ctx = document.getElementById('stats3PieChart').getContext('2d');
+var myChart = new Chart(ctx, {
+type: 'horizontalBar',
+data: {
+datasets: [{
+data: [{% for k,v in categories_incomes.items %}'{{v}}',{% endfor %}],
+backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745','#007bff'],
+label: 'Categories'
+}],
+labels: [{% for k,v in categories_incomes.items %}'{{k}}',{% endfor %}]
+},
+options: {
+legend: {
+align: 'start',
+position: 'right',
+display:false,
 },
 scales: {
 xAxes: [{
 gridLines: {
-display:false
+display:true
 }
 }],
 yAxes: [{
 gridLines: {
-display:false
+display:true
 }
 }]
 }
 }
 });
 
+}
 
-// var test = '{%for k,v in expenses_log.items %}'new Date{{k}}'{% endfor %}'
-// console.log(test)
-// conts test = [{"date":{% for dte in expenses_log.items %} "2019-08-08T00:00:00Z", "y": 3 {% endfor %}}]
+// Income_Date_Chart
 
-// var chartData = [
-//   {"date": "2019-08-07T00:00:00Z", "y": 10},
-//   {"date": "2019-08-06T00:00:00Z", "y": 15},
-//   {"date": "2019-08-05T00:00:00Z", "y": 4},
-//   {"date": "2019-08-03T00:00:00Z", "y": 2},
-//   {"date": "2019-08-04T00:00:00Z", "y": 11},
-//   {"date": "2019-08-02T00:00:00Z", "y": 3},
-//   {"date": "2019-08-01T00:00:00Z", "y": 2},
-// ];
+if (document.getElementById('stats4PieChart') !== null){
 
-var data = '{{expenses_log}}'
+var data = '{{incomes_log}}'
 var chartData = JSON.parse(data.replace(/(&quot\;)/g,"\""));
-// chartData = chartData.split()
-console.log(chartData)
-console.log(typeof chartData)
 
-// var chart2Data = JSON.parse(JSON.stringify('{{expenses_log}}'));
-// chart2Data= chart2Data.replace(/(&quot\;)/g,"\"");
-// console.log(chart2Data)
-// Parse the dates to JS
 chartData.forEach((d) => {
-  d.x = new Date(d.date);
+d.x = new Date(d.date);
 });
-console.log(chartData)
 
-var ctx2 = document.getElementById('stats2PieChart').getContext('2d');
+var ctx2 = document.getElementById('stats4PieChart').getContext('2d');
 var myChart2 = new Chart(ctx2, {
-    type: 'bar',
-    data: {
-      datasets: [
-        {
-          label: 'new subscribers',
-          data: chartData,
-          backgroundColor: 'rgba(220,20,20,0.5)',
-        },
-      ],
-    },
-    options: {
-      // responsive: true,
-      scales: {
-        xAxes: [
-          {
-            type: 'time',
-            time: {
-              unit: 'day',
-              round: 'day',
-              displayFormats: {
-                day: 'D-MMM,Y',
-              },
-            },
-          },
-        ],
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-            },
-          },
-        ],
-      },
-    },
-  });
+type: 'bar',
+data: {
+datasets: [
+{
+label: 'new subscribers',
+data: chartData,
+backgroundColor: '#fd7e14',
+},
+],
+},
+options: {
+legend: {
+align: 'start',
+position: 'right',
+display:false,
+},
+// responsive: true,
+scales: {
+xAxes: [
+{
+type: 'time',
+time: {
+unit: 'day',
+round: 'day',
+displayFormats: {
+day: 'D-MMM,Y',
+},
+},
+},
+],
+yAxes: [
+{
+ticks: {
+beginAtZero: true,
+},
+},
+],
+},
+},
+});
 
-// type: 'line',
-// data: {
-// datasets: [{
-// data: [50,70,90],
-// backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745','#007bff'],
-// label: 'Dataset 1'
-// }],
-// labels: [
-
-// d1,
-// d2,
-// d3
-
-// ]
-// },
-// options: {
-// legend: {
-// align: 'start',
-// position: 'right',
-// },
-// scales: {
-// xAxes: [{
-//  type: 'time',
-// time: {
-//   unit : 'month',
-// },
-// gridLines: {
-// display:false
-// }
-// }],
-// yAxes: [{
-// gridLines: {
-// display:false
-// }
-// }]
-// }
-// }
-// });
-
-
-
-
-// var ctx = document.getElementById('stats3PieChart').getContext('2d');
-// var myChart = new Chart(ctx, {
-// type: 'horizontalBar',
-// data: {
-// datasets: [{
-// data: [50,70,90],
-// backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745','#007bff'],
-// label: 'Dataset 1'
-// }],
-// labels: ['test','test2','test3']
-// },
-// options: {
-// legend: {
-// align: 'start',
-// position: 'right',
-// },
-// scales: {
-// xAxes: [{
-// gridLines: {
-// display:false
-// }
-// }],
-// yAxes: [{
-// gridLines: {
-// display:false
-// }
-// }]
-// }
-// }
-// });
-
-// var ctx = document.getElementById('stats4PieChart').getContext('2d');
-// var myChart = new Chart(ctx, {
-// type: 'horizontalBar',
-// data: {
-// datasets: [{
-// data: [50,70,90],
-// backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745','#007bff'],
-// label: 'Dataset 1'
-// }],
-// labels: ['test','test2','test3']
-// },
-// options: {
-// legend: {
-// align: 'start',
-// position: 'right',
-// },
-// scales: {
-// xAxes: [{
-// gridLines: {
-// display:false
-// }
-// }],
-// yAxes: [{
-// gridLines: {
-// display:false
-// }
-// }]
-// }
-// }
-// });
-
-
+}
 
 </script>
 {% endblock javascript %}

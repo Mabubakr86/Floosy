@@ -11,3 +11,10 @@ income section in stats
 testing for new users and bug when selectin bad
 categories (edit & delete one category), deleteting all related tickets and adjusting balance
 currency based on country
+
+
+to be fixed:
+>> stats
+ strange dates 
+ empty income or expense data (new client)
+

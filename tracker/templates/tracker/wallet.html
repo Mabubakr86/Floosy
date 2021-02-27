@@ -41,7 +41,11 @@
       </div>
       <div class="col-12 col-md-8">
         <div class="block bg-white my-4 p-4 rounded">
+          {% if tickets_count %}
           <canvas id="walletPieChart"></canvas>
+          {% else %}
+          <p style="text-align: center; font-weight: bold;"> No Expenses Tickets Yet!</p>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -51,7 +55,7 @@
           <h5 class="blockHeading p-3 text-center text-primary">Add Ticket</h5>
           <div class="blockContent p-4">
             
-            <form method="POST" autocomplete="off">
+            <form method="POST" autocomplete="off" id="ticketform">
               {% csrf_token %}
               {{ form.media }}
               <!-- {{form|crispy}} -->
@@ -72,12 +76,31 @@
                   </div>
                 </div>
                 <div class="form-group col-md-6 col-lg-6">
+
+                  {% if cat_list %}
+
                   {{form.category|as_crispy_field}}
-                  <!--                   <label for="inputCategory">Category</label>
-                  <select id="inputCategory" class="form-control">
+
+                  {% else %}
+
+                  <label for="inputCategory">Category</label>
+                  <select id="inputCategory" class="form-control" form="ticketform" onchange="location = this.value;">
+                    <option selected>Choose..</option>
+                    <option value="{% url 'tracker:add_category'  %}">Add Category..</option>
+                  </select>
+
+                  {% endif %}
+
+
+
+
+
+  <!--                   <label for="inputCategory">Category</label>
+                  <select id="inputCategory" class="form-control" form="ticketform">
                     <option selected >Choose...</option>
                     {% for category in categories %}
                       <option>{{category.name}}</option>
+
                     {% endfor %}
                   </select> -->
                 </div>
@@ -130,6 +153,14 @@ var myChart = new Chart(ctx, {
   },
   
   options: {
+
+          title: {
+            display: true,
+            text: 'Expenses Categories',
+            fontSize: 20,
+            fontColor: '#666',
+            fontStyle:'bold',
+        },
 
     legend: {
       align: 'start',
