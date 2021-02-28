@@ -72,10 +72,10 @@
         <a id='endpoint' href='{% url "tracker:search_tickets" %}'></a>
     </section>
         <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-md-4">
                 
             </div>
-            <div class="col-4">
+            <div class="col-12 col-md-4" id="pagination">
                 <div class="align-middle">
                     {% if page_tickets %}
                         {% if page_tickets.has_previous %}
@@ -99,6 +99,8 @@
             <div class="col-4">
             </div>
         </div>
+
+ <a id='endpoint' href='{% url "tracker:search_tickets" %}'></a>       
 {% endblock content %}
 {% block javascript %}
     <script type="text/javascript">

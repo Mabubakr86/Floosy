@@ -128,6 +128,7 @@ def stats(request, slug):
     week_start = today-timedelta(days=today.weekday())
     month_start = today-timedelta(days=today.day)
     year_start = today-timedelta(weeks=today.isocalendar()[1])
+
     # Get the proper tickets
     wallet = get_object_or_404(Wallet, slug=slug,owner=request.user)
     categories = wallet.category_set.all()
@@ -140,8 +141,8 @@ def stats(request, slug):
         Q(date__lte=timezone.now())).aggregate(month_sum=Sum('value'))['month_sum']
     year_sum = expense_tickets.filter(Q(date__gte=year_start)&
         Q(date__lte=timezone.now())).aggregate(year_sum=Sum('value'))['year_sum']
-
     if week_sum:
+        ## need to fix timezone now 
         week_sum = float(week_sum)
     if month_sum:
         month_sum = float(month_sum)
@@ -164,15 +165,14 @@ def stats(request, slug):
             expense = True
             expenses = expense_tickets.filter(Q(date__gte=from_)&Q(date__lte=to))
             expenses_total_ = expenses.aggregate(total=Sum('value'))['total']
-            print(expenses_total_)
-            print(expenses)
+
             if expenses_total_ and expenses:
                 graph = True
                 expenses_total = float(expenses_total_)
                 max_card = expenses.order_by('-value').first()
                 max_expense_date = max_card.date
                 max_expense_value = float(max_card.value)
-                print(max_expense_date)
+
 
                 # Polpulate Categories chart
                 categories_expenses = {}
